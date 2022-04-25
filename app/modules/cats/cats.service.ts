@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron, UseLocker } from '../schedule';
-import { TaskLocker } from './task-locker';
+import { Cron, UseLocker } from 'nestjs-schedule';
+import { ScheduleLocker } from './task-locker';
 
 @Injectable()
 export class CatsService {
@@ -12,9 +12,15 @@ export class CatsService {
     };
   }
 
-  @Cron('*/7 * * * * *', { name: 'cron-job' })
-  @UseLocker(TaskLocker)
+  @Cron('*/10 * * * * *', { name: 'cron-job' })
+  @UseLocker(ScheduleLocker)
   handleCron() {
     this.logger.debug('run distributed cron job');
+  }
+
+  @Cron('*/15 * * * * *', { name: 'cron-job2' })
+  @UseLocker(ScheduleLocker)
+  handleCron2() {
+    this.logger.debug('run distributed cron job2');
   }
 }

@@ -1,15 +1,24 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { InjectSchedule, Schedule } from '../schedule';
+import { InjectSchedule, Schedule } from 'nestjs-schedule';
+import { ScheduleLocker } from '../cats/task-locker';
 
 @Injectable()
 export class AppService implements OnModuleInit {
   private readonly logger = new Logger(AppService.name);
-  constructor(@InjectSchedule() private readonly schedule: Schedule) {}
+  constructor(
+    @InjectSchedule() private readonly schedule: Schedule,
+    private readonly locker: ScheduleLocker,
+  ) {}
 
   async onModuleInit() {
-    this.schedule.createIntervalJob(() => {
-      this.logger.debug('=------------------interval job');
-    }, 2000);
+    this.schedule.createIntervalJob(
+      () => {
+        this.logger.debug('=------------------interval job');
+      },
+      20000,
+      this.locker,
+      { name: 'interval-job' },
+    );
   }
 
   getHello(): string {

@@ -8,6 +8,13 @@ export class ScheduleLocker implements Locker {
 
   private readonly logger = new Logger(ScheduleLocker.name);
 
+  release(jobName: string): any {
+    const lockKey = this.getLockKey(jobName);
+    setTimeout(async () => {
+      await this.redisService.getClient().del(lockKey);
+    }, 4 * 1000);
+  }
+
   async tryLock(jobName: string): Promise<boolean> {
     const lockKey = this.getLockKey(jobName);
 
@@ -18,16 +25,8 @@ export class ScheduleLocker implements Locker {
     if (!locked) {
       return false;
     }
-
+    this.logger.debug(`${jobName} locked`);
     return true;
-  }
-
-  release(jobName: string): any {
-    const lockKey = this.getLockKey(jobName);
-
-    setTimeout(async () => {
-      await this.redisService.getClient().del(lockKey);
-    }, 4 * 1000);
   }
 
   private getLockKey(jobName): string {

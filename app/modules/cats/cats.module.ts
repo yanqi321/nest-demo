@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CatsController } from './cats.controller';
 import { CatsService } from './cats.service';
-import { TaskLocker } from './task-locker';
+import { ScheduleLocker } from './task-locker';
 
 @Module({
   controllers: [CatsController],
-  providers: [CatsService, TaskLocker],
+  providers: [CatsService, ScheduleLocker],
+  exports: [ScheduleLocker],
 })
 export class CatsModule {}
