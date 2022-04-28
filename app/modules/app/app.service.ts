@@ -1,6 +1,6 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { InjectSchedule, Schedule } from 'nestjs-schedule';
-import { ScheduleLocker } from '../cats/task-locker';
+import { ScheduleLocker } from '../cats/schedule-locker';
 
 @Injectable()
 export class AppService implements OnModuleInit {

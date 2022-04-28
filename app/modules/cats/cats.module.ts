@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CatsController } from './cats.controller';
 import { CatsService } from './cats.service';
-import { ScheduleLocker } from './task-locker';
+import { ScheduleLocker } from './schedule-locker';
 
 @Module({
   controllers: [CatsController],
